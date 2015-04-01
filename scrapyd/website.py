@@ -111,7 +111,7 @@ class Jobs(resource.Resource):
         s += "<h1>Jobs</h1>"
         s += "<p><a href='..'>Go back</a></p>"
         s += "<table border='1'>"
-        s += "<tr><th>Project</th><th>Spider</th><th>Job</th><th>PID</th><th>Runtime</th><th>Log</th>"
+        s += "<th>Project</th><th>Spider</th><th>Job</th><th>PID</th><th>Runtime</th><th>Log</th><th>Items</th><th>Start URL</th>"
         if self.local_items:
             s += "<th>Items</th>"
             cols = 7
@@ -133,6 +133,8 @@ class Jobs(resource.Resource):
             s += "<td><a href='/logs/%s/%s/%s.log'>Log</a></td>" % (p.project, p.spider, p.job)
             if self.local_items:
                 s += "<td><a href='/items/%s/%s/%s.jl'>Items</a></td>" % (p.project, p.spider, p.job)
+            # Printing the start_url parameter
+            s += "<td>%s</td>" % p.start_url
             s += "</tr>"
         s += "<tr><th colspan='%s' style='background-color: #ddd'>Finished</th></tr>" % cols
         for p in self.root.launcher.finished:
@@ -144,6 +146,8 @@ class Jobs(resource.Resource):
             s += "<td><a href='/logs/%s/%s/%s.log'>Log</a></td>" % (p.project, p.spider, p.job)
             if self.local_items:
                 s += "<td><a href='/items/%s/%s/%s.jl'>Items</a></td>" % (p.project, p.spider, p.job)
+            # Printing the start_url parameter
+            s += "<td>%s</td>" % p.start_url
             s += "</tr>"
         s += "</table>"
         s += "</body>"

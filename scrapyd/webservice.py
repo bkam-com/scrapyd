@@ -30,10 +30,14 @@ class Schedule(WsResource):
         args = dict((k, v[0]) for k, v in txrequest.args.items())
         project = args.pop('project')
         spider = args.pop('spider')
+        # The value of the start_url parameter
+        start_url = args.pop('start_url')
         spiders = get_spider_list(project)
         if not spider in spiders:
             return {"status": "error", "message": "spider '%s' not found" % spider}
         args['settings'] = settings
+        # Put the start_url in the args list
+        args['start_url'] = start_url
         jobid = uuid.uuid1().hex
         args['_job'] = jobid
         self.root.scheduler.schedule(project, spider, **args)
