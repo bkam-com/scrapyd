@@ -32,12 +32,18 @@ class Schedule(WsResource):
         spider = args.pop('spider')
         # The value of the start_url parameter
         start_url = args.pop('start_url')
+        currency = args.pop('currency')
+        country = args.pop('country')
+        site_id = args.pop('site_id')
         spiders = get_spider_list(project)
         if not spider in spiders:
             return {"status": "error", "message": "spider '%s' not found" % spider}
         args['settings'] = settings
         # Put the start_url in the args list
         args['start_url'] = start_url
+        args['currency'] = currency
+        args['country'] = country
+        args['site_id'] = site_id
         jobid = uuid.uuid1().hex
         args['_job'] = jobid
         self.root.scheduler.schedule(project, spider, **args)

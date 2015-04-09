@@ -44,7 +44,7 @@ class Launcher(Service):
         env = stringify_dict(env, keys_only=False)
         # Sending the start_url parameter to the method
         pp = ScrapyProcessProtocol(slot, project, msg['_spider'], \
-            msg['_job'], env, msg['start_url'])
+            msg['_job'], env, msg['start_url'],msg['currency'],msg['country'],msg['site_id'])
         pp.deferred.addBoth(self._process_finished, slot)
         reactor.spawnProcess(pp, sys.executable, args=args, env=env)
         self.processes[slot] = pp
@@ -68,7 +68,7 @@ class Launcher(Service):
 
 class ScrapyProcessProtocol(protocol.ProcessProtocol):
 
-    def __init__(self, slot, project, spider, job, env, start_url):
+    def __init__(self, slot, project, spider, job, env, start_url,currency,country,site_id):
         self.slot = slot
         self.pid = None
         self.project = project
@@ -79,6 +79,9 @@ class ScrapyProcessProtocol(protocol.ProcessProtocol):
         self.env = env
         # Define the start_url parameter
         self.start_url = start_url
+        self.currency = currency
+        self.country = country
+        self.site_id = site_id
         self.logfile = env.get('SCRAPY_LOG_FILE')
         self.itemsfile = env.get('SCRAPY_FEED_URI')
         self.deferred = defer.Deferred()
